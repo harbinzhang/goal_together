@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-//import 'package:goaltogether/lab/DBHelper.dart';
 import 'package:goaltogether/providers/RecordTableHandler.dart';
 import 'package:goaltogether/models/Record.dart';
 
