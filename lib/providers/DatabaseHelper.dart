@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static final _databaseName = "GoalTogetherDatabase.db";
-  static final _databaseVersion = 1;
+  static final _databaseVersion = 3;
 
   static final columnId = '_id';
 
@@ -33,11 +33,20 @@ class DatabaseHelper {
     String path = join(documentsDirectory.path, _databaseName);
     // Open the database. Can also add an onUpdate callback parameter.
     return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreate);
+        version: _databaseVersion, onCreate: _onCreate, onUpgrade: _onUpgrade);
   }
 
   // SQL string to create the database
   Future _onCreate(Database db, int version) async {
+
+    await db.execute('''
+              CREATE TABLE users (
+                _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                name TEXT NOT NULL,
+                timestamp INTEGER NOT NULL
+              )
+              ''');
+
     await db.execute('''
               CREATE TABLE habits (
                 _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -69,7 +78,19 @@ class DatabaseHelper {
               ''');
   }
 
-  // Helper methods
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+
+    print('hi');
+    await db.execute('''
+              CREATE TABLE users (
+                _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                name TEXT NOT NULL,
+                timestamp INTEGER NOT NULL
+              )
+              ''');
+  }
+
+    // Helper methods
 
   // Inserts a row in the database where each key in the Map is a column name
   // and the value is the column value. The return value is the id of the
