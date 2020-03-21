@@ -4,7 +4,9 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:goaltogether/lab/DBHelper.dart';
+//import 'package:goaltogether/lab/DBHelper.dart';
+import 'package:goaltogether/providers/RecordTableHandler.dart';
+import 'package:goaltogether/models/Record.dart';
 
 void main() => runApp(MyApp());
 
@@ -51,7 +53,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  final dbHelper = DatabaseHelper.instance;
+  final recordHandler = RecordTableHandler();
 
   void _incrementCounter() {
     setState(() {
@@ -100,35 +102,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _insert() async {
     // row to insert
-    Map<String, dynamic> row = {
-      DatabaseHelper.columnName : 'Bob',
-      DatabaseHelper.columnAge  : 23
-    };
-    final id = await dbHelper.insert(row);
+    final record = Goal(habitName: 'what', value: 3, user: 'sea');
+    final id = await recordHandler.insert(record);
     print('inserted row id: $id');
   }
 
   void _query() async {
-    final allRows = await dbHelper.queryAllRows();
+    final allRows = await recordHandler.queryAllRows();
     print('query all rows:');
     allRows.forEach((row) => print(row));
   }
 
   void _update() async {
     // row to update
-    Map<String, dynamic> row = {
-      DatabaseHelper.columnId   : 1,
-      DatabaseHelper.columnName : 'Mary',
-      DatabaseHelper.columnAge  : 32
-    };
-    final rowsAffected = await dbHelper.update(row);
-    print('updated $rowsAffected row(s)');
+//    Map<String, dynamic> row = {
+//      DatabaseHelper.columnId   : 1,
+//      DatabaseHelper.columnName : 'Mary',
+//      DatabaseHelper.columnAge  : 32
+//    };
+//    final rowsAffected = await recordHandler.update(row);
+//    print('updated $rowsAffected row(s)');
   }
 
   void _delete() async {
     // Assuming that the number of rows is the id for the last row.
-    final id = await dbHelper.queryRowCount();
-    final rowsDeleted = await dbHelper.delete(id);
+    final id = await recordHandler.queryRowCount();
+    final rowsDeleted = await recordHandler.delete(id);
     print('deleted $rowsDeleted row(s): row $id');
   }
 
