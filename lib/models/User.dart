@@ -13,14 +13,13 @@ class User {
     @required this.id,
     @required this.name,
     @required this.timestamp,
-  })  : assert(name != null);
+  }) : assert(name != null);
 
   @override
   String toString() => "User (id:$id, name:$name timestamp:$timestamp)";
 
+  // TODO: check only name
   @override
-  int compareTo(User other) => 0;
-
-  @override
-  bool operator ==(other) => other is User && other.id == this.id && other.name == this.name;
+  bool operator ==(other) =>
+      other is User && other.id == this.id && other.name == this.name;
 }

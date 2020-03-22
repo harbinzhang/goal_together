@@ -4,6 +4,10 @@ import 'package:collection/collection.dart';
 import 'package:goaltogether/models/User.dart';
 import 'package:goaltogether/providers/UserTableHandler.dart';
 
+
+
+
+
 class UsersPage extends StatefulWidget {
   UsersPage({Key key, this.title}) : super(key: key);
 
@@ -26,6 +30,7 @@ class _UsersPageState extends State<UsersPage> {
   int _counter = 0;
   final usersHandler = RecordTableHandler();
   List<User> _users = [];
+  final _usernameController = TextEditingController();
 
   void _incrementCounter() {
     setState(() {
@@ -44,6 +49,13 @@ class _UsersPageState extends State<UsersPage> {
     return Scaffold(
       appBar: AppBar(title: Text("test"),),
       body: _buildUsersList(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showAddUser();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
+      )
     );
   }
 
@@ -104,9 +116,9 @@ class _UsersPageState extends State<UsersPage> {
 
   }
   
-  void _insert() async {
+  void _insert(String username) async {
     // row to insert
-    final user = User(name: 'haibin');
+    final user = User(name: username);
     final id = await usersHandler.insert(user);
     print('inserted row id: $id');
   }
@@ -135,5 +147,44 @@ class _UsersPageState extends State<UsersPage> {
     print('deleted $rowsDeleted row(s): row $id');
   }
 
+
+  void _showAddUser() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("New User"),
+          content: new TextField(
+            controller: _usernameController,
+            decoration: InputDecoration(
+//                filled: true,
+              labelText: 'Username',
+            ),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                _usernameController.clear();
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Add"),
+              onPressed: () {
+                _insert(_usernameController.text);
+                _refreshUsersList();
+                _usernameController.clear();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 }

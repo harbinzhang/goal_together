@@ -107,6 +107,29 @@ class DatabaseHelper {
     return await db.query(table);
   }
 
+  Future<List<Map<String, dynamic>>> query(String table, {bool distinct,
+    List<String> columns,
+    String where,
+    List<dynamic> whereArgs,
+    String groupBy,
+    String having,
+    String orderBy,
+    int limit,
+    int offset}) async {
+    Database db = await instance.database;
+    return await db.query(table,
+      distinct:distinct,
+      columns:columns,
+      where:where,
+      whereArgs:whereArgs,
+      groupBy:groupBy,
+      having:having,
+      orderBy:orderBy,
+      limit:limit,
+      offset:offset
+    );
+  }
+
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
   Future<int> queryRowCount(String table) async {

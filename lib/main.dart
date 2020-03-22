@@ -8,6 +8,7 @@ import 'package:goaltogether/providers/RecordTableHandler.dart';
 import 'package:goaltogether/models/Record.dart';
 
 import 'package:goaltogether/pages/UsersPage.dart';
+import 'package:goaltogether/pages/HabitsPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: UsersPage(title: 'Flutter Demo Home Page'),
+      home: HabitsPage(user: 'haibin'),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:goaltogether/providers/DatabaseHelper.dart';
 import 'package:goaltogether/models/Habit.dart';
 
-class RecordTableHandler{
+class HabitTableHandler{
   final dbHelper = DatabaseHelper.instance;
   final table = 'habits';
 
@@ -20,6 +20,27 @@ class RecordTableHandler{
     final res = await dbHelper.queryAllRows(table);
     return res;
   }
+
+
+
+  Future<List<Habit>> queryAllHabitsByUser(String username) async {
+    final rows = await dbHelper.query(table,
+        where: 'user=?',
+        whereArgs: [username]
+    );
+
+    print(rows);
+    final res = rows.map((row) => Habit(
+        id:row[Habit.columnId],
+        habitName: row[Habit.columnHabitName],
+        value: row[Habit.columnValue],
+        user: row[Habit.columnUser],
+        timestamp: row[Habit.columnTimestamp]
+    )).toList();
+
+    return res;
+  }
+
 
   Future<int> queryRowCount() async {
     return await dbHelper.queryRowCount(table);

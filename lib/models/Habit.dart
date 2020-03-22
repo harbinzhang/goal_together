@@ -25,4 +25,11 @@ class Habit {
 
   @override
   String toString() => "$habitName with value:$value (by user:$user)";
+
+  @override
+  bool operator ==(other) =>
+      other is Habit &&
+          other.id == this.id &&
+          other.habitName == this.habitName &&
+          other.user == this.user;
 }
