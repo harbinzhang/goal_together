@@ -4,9 +4,10 @@ import 'package:collection/collection.dart';
 import 'package:goaltogether/models/User.dart';
 import 'package:goaltogether/providers/UserTableHandler.dart';
 
+import 'package:goaltogether/pages/HabitsPage.dart';
 
-
-
+import 'package:goaltogether/res/colors.dart';
+import 'package:goaltogether/components/UserCard.dart';
 
 class UsersPage extends StatefulWidget {
   UsersPage({Key key, this.title}) : super(key: key);
@@ -27,83 +28,61 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
-  int _counter = 0;
   final usersHandler = RecordTableHandler();
   List<User> _users = [];
   final _usernameController = TextEditingController();
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     _refreshUsersList();
     return Scaffold(
-      appBar: AppBar(title: Text("test"),),
-      body: _buildUsersList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddUser();
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.green,
-      )
-    );
+        appBar: AppBar(
+          title: Text("Users"),
+        ),
+        body: _buildUsersList(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _showAddUser();
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.green,
+        ));
   }
 
   Widget _buildUsersList() {
-
     print(_users);
     return ListView.separated(
       padding: const EdgeInsets.all(8),
       itemCount: _users.length,
       itemBuilder: (BuildContext context, int index) {
-        var name = _users[index].name;
-        return Container(
-          child: Text('$name'),
+        final item = _users[index];
+        var name = item.name;
+        return Dismissible(
+          background: Container(color: kShrinePink50),
+          key: UniqueKey(),
+          onDismissed: (direction) {
+            setState(() {
+              _delete(item.id);
+              _users.removeAt(index);
+            });
+
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text("$item dismissed")));
+          },
+          child: RaisedButton(
+            child: userCard(name),
+            onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HabitsPage(user: name)),
+                );
+            }
+          ),
         );
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
-
-//    return Scaffold(
-//      appBar: AppBar(
-//        title: Text('sqflite'),
-//      ),
-//      body: Center(
-//        child: Column(
-//          mainAxisAlignment: MainAxisAlignment.center,
-//          children: <Widget>[
-//            RaisedButton(
-//              child: Text('insert', style: TextStyle(fontSize: 20),),
-//              onPressed: () {_insert();},
-//            ),
-//            RaisedButton(
-//              child: Text('query', style: TextStyle(fontSize: 20),),
-//              onPressed: () {_query();},
-//            ),
-//            RaisedButton(
-//              child: Text('update', style: TextStyle(fontSize: 20),),
-//              onPressed: () {_update();},
-//            ),
-//            RaisedButton(
-//              child: Text('delete', style: TextStyle(fontSize: 20),),
-//              onPressed: () {_delete();},
-//            ),
-//          ],
-//        ),
-//      ),
-//    );
-//  }
 
   void _refreshUsersList() async {
     var users = await usersHandler.queryAllUsers();
@@ -113,9 +92,8 @@ class _UsersPageState extends State<UsersPage> {
         _users = users;
       });
     }
-
   }
-  
+
   void _insert(String username) async {
     // row to insert
     final user = User(name: username);
@@ -140,13 +118,11 @@ class _UsersPageState extends State<UsersPage> {
 //    print('updated $rowsAffected row(s)');
   }
 
-  void _delete() async {
+  void _delete(int id) async {
     // Assuming that the number of rows is the id for the last row.
-    final id = await usersHandler.queryRowCount();
     final rowsDeleted = await usersHandler.delete(id);
     print('deleted $rowsDeleted row(s): row $id');
   }
-
 
   void _showAddUser() {
     // flutter defined function
@@ -186,5 +162,4 @@ class _UsersPageState extends State<UsersPage> {
       },
     );
   }
-
 }

@@ -3,7 +3,9 @@ import 'package:collection/collection.dart';
 
 import 'package:goaltogether/models/Habit.dart';
 import 'package:goaltogether/providers/HabitTableHandler.dart';
+import 'package:goaltogether/res/colors.dart';
 
+import 'package:goaltogether/components/HabitCard.dart';
 
 class HabitsPage extends StatefulWidget {
   HabitsPage({Key key, this.user}) : super(key: key);
@@ -27,7 +29,7 @@ class _HabitsPageState extends State<HabitsPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        appBar: AppBar(title: Text("test"),),
+        appBar: AppBar(title: Text("$user's Habit"),),
         body: _buildHabitsList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -46,9 +48,26 @@ class _HabitsPageState extends State<HabitsPage> {
       padding: const EdgeInsets.all(8),
       itemCount: _habits.length,
       itemBuilder: (BuildContext context, int index) {
-        var habitName = _habits[index].habitName;
-        return Container(
-          child: Text('$habitName'),
+        final item = _habits[index];
+        var habitName = item.habitName;
+        return Dismissible(
+          background: Container(color: kShrinePink50),
+          key: UniqueKey(),
+          onDismissed: (direction) {
+            setState(() {
+              _delete(item.id);
+              _habits.removeAt(index);
+            });
+
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text("$item dismissed")));
+          },
+          child: RaisedButton(
+              child: habitCard(habitName),
+              onPressed: () {
+
+              }
+          ),
         );
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
@@ -75,6 +94,12 @@ class _HabitsPageState extends State<HabitsPage> {
     );
     final id = await habitsHandler.insert(habit);
     print('inserted row id: $id');
+  }
+
+  void _delete(int id) async {
+    // Assuming that the number of rows is the id for the last row.
+    final rowsDeleted = await habitsHandler.delete(id);
+    print('deleted $rowsDeleted row(s): row $id');
   }
 
 

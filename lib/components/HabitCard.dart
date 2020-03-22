@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:goaltogether/res/colors.dart';
 
-Card userCard(String username) => Card(
+Card habitCard(String habit) => Card(
   elevation: 8.0,
   margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
   child: Container(
     decoration: BoxDecoration(color: kShrinePink300),
-    child: makeListTile(username),
+    child: makeListTile(habit),
   ),
 );
 
