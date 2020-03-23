@@ -5,7 +5,7 @@ import 'package:goaltogether/models/Wish.dart';
 import 'package:goaltogether/providers/WishTableHandler.dart';
 import 'package:goaltogether/res/colors.dart';
 
-import 'package:goaltogether/components/HabitCard.dart';
+import 'package:goaltogether/components/WishCard.dart';
 
 class WishesPage extends StatefulWidget {
   WishesPage({Key key, this.user}) : super(key: key);
@@ -50,7 +50,6 @@ class _WishesPageState extends State<WishesPage> {
       itemCount: _wishes.length,
       itemBuilder: (BuildContext context, int index) {
         final item = _wishes[index];
-        var habitName = item.wishName;
         return Dismissible(
           background: Container(color: kShrinePink50),
           key: UniqueKey(),
@@ -64,7 +63,7 @@ class _WishesPageState extends State<WishesPage> {
                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
           },
           child: new InkWell(
-              child: habitCard(habitName),
+              child: WishCard(item),
               onTap: () {
 
               }
