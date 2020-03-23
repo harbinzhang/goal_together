@@ -24,7 +24,7 @@ class Habit {
         assert(user != null);
 
   @override
-  String toString() => "$habitName with value:$value (by user:$user)";
+  String toString() => "Habit(id:$id, habitName:$habitName, value:$value, user:$user, timestamp:$timestamp)";
 
   @override
   bool operator ==(other) =>

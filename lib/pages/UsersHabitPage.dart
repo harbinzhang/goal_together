@@ -69,9 +69,9 @@ class _UsersHabitPageState extends State<UsersHabitPage> {
             Scaffold.of(context)
                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
           },
-          child: RaisedButton(
+          child: new InkWell(
               child: userCard(name),
-              onPressed: () {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(

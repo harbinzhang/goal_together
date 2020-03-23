@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:goaltogether/res/colors.dart';
 
 Card WishCard(String wish) => Card(
-  elevation: 8.0,
-  margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-  child: Container(
-    decoration: BoxDecoration(color: kShrinePink300),
-    child: makeListTile(wish),
-  ),
-);
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      elevation: 8.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: kShrinePink300,
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
+        child: makeListTile(wish),
+      ),
+    );
 
 ListTile makeListTile(String name) => ListTile(
     contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -32,4 +38,4 @@ ListTile makeListTile(String name) => ListTile(
       ],
     ),
     trailing:
-    Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0));
+        Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0));

@@ -24,7 +24,7 @@ class Wish {
         assert(user != null);
 
   @override
-  String toString() => "$wishName(by user:$user) with targetValue=$targetValue";
+  String toString() => "Wish(id:$id, wishName:$wishName, targetValue:$targetValue, user:$user, timestamp:$timestamp)";
 
   @override
   bool operator ==(other) =>

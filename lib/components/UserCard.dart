@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:goaltogether/res/colors.dart';
 
 Card userCard(String username) => Card(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(15.0),
+  ),
   elevation: 8.0,
   margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
   child: Container(
-    decoration: BoxDecoration(color: kShrinePink300),
+    decoration: BoxDecoration(
+      color: kShrinePink300,
+      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+      ),
     child: makeListTile(username),
   ),
 );

@@ -24,5 +24,5 @@ class Goal {
         assert(user != null);
 
   @override
-  String toString() => "$value $habitName (by user:$user) done at $timestamp";
+  String toString() => "Record(id:$id, habitName:$habitName, value:$value, user:$user, timestamp:$timestamp)";
 }

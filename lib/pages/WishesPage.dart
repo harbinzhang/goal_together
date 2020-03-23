@@ -28,7 +28,7 @@ class _WishesPageState extends State<WishesPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    _refreshWishesList();
     return Scaffold(
         appBar: AppBar(title: Text("$user's wish pool"),),
         body: _buildWishesList(),
@@ -63,9 +63,9 @@ class _WishesPageState extends State<WishesPage> {
             Scaffold.of(context)
                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
           },
-          child: RaisedButton(
+          child: new InkWell(
               child: habitCard(habitName),
-              onPressed: () {
+              onTap: () {
 
               }
           ),

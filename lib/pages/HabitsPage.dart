@@ -27,7 +27,7 @@ class _HabitsPageState extends State<HabitsPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    _refreshHabitsList();
     return Scaffold(
         appBar: AppBar(title: Text("$user's Habit"),),
         body: _buildHabitsList(),
@@ -62,9 +62,9 @@ class _HabitsPageState extends State<HabitsPage> {
             Scaffold.of(context)
                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
           },
-          child: RaisedButton(
+          child: new InkWell(
               child: habitCard(habitName),
-              onPressed: () {
+              onTap: () {
 
               }
           ),

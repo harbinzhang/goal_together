@@ -69,10 +69,9 @@ class _UsersWishPageState extends State<UsersWishPage> {
             Scaffold.of(context)
                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
           },
-          child: RaisedButton(
-              color: Colors.white,
+          child: InkWell(
               child: userCard(name),
-              onPressed: () {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
