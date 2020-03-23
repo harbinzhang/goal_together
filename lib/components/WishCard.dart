@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:goaltogether/res/colors.dart';
 
-Card userCard(String username) => Card(
+Card WishCard(String wish) => Card(
   elevation: 8.0,
   margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
   child: Container(
     decoration: BoxDecoration(color: kShrinePink300),
-    child: makeListTile(username),
+    child: makeListTile(wish),
   ),
 );
 
@@ -25,11 +25,11 @@ ListTile makeListTile(String name) => ListTile(
     ),
     // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
-//    subtitle: Row(
-//      children: <Widget>[
-//        Icon(Icons.linear_scale, color: Colors.yellowAccent),
-//        Text(" Intermediate", style: TextStyle(color: Colors.white))
-//      ],
-//    ),
+    subtitle: Row(
+      children: <Widget>[
+        Icon(Icons.linear_scale, color: Colors.yellowAccent),
+        Text(" Intermediate", style: TextStyle(color: Colors.white))
+      ],
+    ),
     trailing:
     Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0));

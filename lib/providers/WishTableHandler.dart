@@ -1,16 +1,16 @@
 import 'package:goaltogether/providers/DatabaseHelper.dart';
-import 'package:goaltogether/models/Goal.dart';
+import 'package:goaltogether/models/Wish.dart';
 
-class GoalTableHandler{
+class WishTableHandler{
   final dbHelper = DatabaseHelper.instance;
-  final table = 'goals';
+  final table = 'wishes';
 
-  Future<int> insert(Goal goal) async {
+  Future<int> insert(Wish goal) async {
     Map<String, dynamic> row = {
-      Goal.columnGoalName : goal.goalName,
-      Goal.columnTargetValue : goal.targetValue,
-      Goal.columnUser : goal.user,
-      Goal.columnTimestamp : DateTime.now().millisecondsSinceEpoch,
+      Wish.columnWishName : goal.wishName,
+      Wish.columnTargetValue : goal.targetValue,
+      Wish.columnUser : goal.user,
+      Wish.columnTimestamp : DateTime.now().millisecondsSinceEpoch,
     };
     int res = await dbHelper.insert(table, row);
     return res;
@@ -24,6 +24,25 @@ class GoalTableHandler{
   Future<int> queryRowCount() async {
     return await dbHelper.queryRowCount(table);
   }
+
+  Future<List<Wish>> queryAllWishesByUser(String username) async {
+    final rows = await dbHelper.query(table,
+        where: 'user=?',
+        whereArgs: [username]
+    );
+
+    print(rows);
+    final res = rows.map((row) => Wish(
+        id:row[Wish.columnId],
+        wishName: row[Wish.columnWishName],
+        targetValue: row[Wish.columnTargetValue],
+        user: row[Wish.columnUser],
+        timestamp: row[Wish.columnTimestamp]
+    )).toList();
+
+    return res;
+  }
+
 
   // We are assuming here that the id column in the map is set. The other
   // column values will be used to update the row.

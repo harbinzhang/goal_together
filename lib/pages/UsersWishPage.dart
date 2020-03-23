@@ -4,13 +4,13 @@ import 'package:collection/collection.dart';
 import 'package:goaltogether/models/User.dart';
 import 'package:goaltogether/providers/UserTableHandler.dart';
 
-import 'package:goaltogether/pages/HabitsPage.dart';
+import 'package:goaltogether/pages/WishesPage.dart';
 
 import 'package:goaltogether/res/colors.dart';
 import 'package:goaltogether/components/UserCard.dart';
 
-class UsersPage extends StatefulWidget {
-  UsersPage({Key key, this.title}) : super(key: key);
+class UsersWishPage extends StatefulWidget {
+  UsersWishPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -24,10 +24,10 @@ class UsersPage extends StatefulWidget {
   final String title;
 
   @override
-  _UsersPageState createState() => _UsersPageState();
+  _UsersWishPageState createState() => _UsersWishPageState();
 }
 
-class _UsersPageState extends State<UsersPage> {
+class _UsersWishPageState extends State<UsersWishPage> {
   final usersHandler = RecordTableHandler();
   List<User> _users = [];
   final _usernameController = TextEditingController();
@@ -70,14 +70,15 @@ class _UsersPageState extends State<UsersPage> {
                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
           },
           child: RaisedButton(
-            child: userCard(name),
-            onPressed: () {
+              color: Colors.white,
+              child: userCard(name),
+              onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HabitsPage(user: name)),
+                  MaterialPageRoute(
+                      builder: (context) => WishesPage(user: name)),
                 );
-            }
-          ),
+              }),
         );
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),

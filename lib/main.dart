@@ -7,7 +7,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:goaltogether/providers/RecordTableHandler.dart';
 import 'package:goaltogether/models/Record.dart';
 
-import 'package:goaltogether/pages/UsersPage.dart';
+import 'package:goaltogether/pages/UsersHabitPage.dart';
+import 'package:goaltogether/pages/UsersWishPage.dart';
 import 'package:goaltogether/pages/HabitsPage.dart';
 
 void main() => runApp(TabBarDemo());
@@ -22,8 +23,8 @@ class TabBarDemo extends StatelessWidget {
           bottomNavigationBar: menu(),
           body: TabBarView(
             children: [
-              UsersPage(title: 'Welcome'),
-              Icon(Icons.directions_transit),
+              UsersHabitPage(title: 'Welcome'),
+              UsersWishPage(title: 'W'),
               Icon(Icons.directions_bike),
             ],
           ),
@@ -43,16 +44,16 @@ class TabBarDemo extends StatelessWidget {
         indicatorColor: Colors.blue,
         tabs: [
           Tab(
-            text: "User",
-            icon: Icon(Icons.supervised_user_circle),
+            text: "Habit",
+            icon: Icon(Icons.av_timer),
           ),
           Tab(
             text: "Wish",
-            icon: Icon(Icons.poll),
+            icon: Icon(Icons.card_giftcard),
           ),
           Tab(
             text: "More",
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.more_horiz),
           ),
         ],
       )

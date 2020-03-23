@@ -1,28 +1,32 @@
 import 'package:flutter/foundation.dart';
 
-class Goal {
+class Wish {
   final int id;
-  final String goalName;
+  final String wishName;
   final int targetValue;
   final String user;
   final int timestamp;
 
   static final columnId = '_id';
-  static final columnGoalName = 'goalName';
+  static final columnWishName = 'wishName';
   static final columnTargetValue = 'targetValue';
   static final columnUser = 'user';
   static final columnTimestamp = 'timestamp';
 
-  const Goal({
+  const Wish({
     @required this.id,
-    @required this.goalName,
+    @required this.wishName,
     @required this.targetValue,
     @required this.user,
     @required this.timestamp,
-  })  : assert(goalName != null),
+  })  : assert(wishName != null),
         assert(targetValue != null),
         assert(user != null);
 
   @override
-  String toString() => "$goalName(by user:$user) with targetValue=$targetValue";
+  String toString() => "$wishName(by user:$user) with targetValue=$targetValue";
+
+  @override
+  bool operator ==(other) =>
+      other is Wish && other.id == this.id && other.wishName == this.wishName;
 }

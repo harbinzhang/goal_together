@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static final _databaseName = "GoalTogetherDatabase.db";
-  static final _databaseVersion = 3;
+  static final _databaseVersion = 5;
 
   static final columnId = '_id';
 
@@ -58,9 +58,9 @@ class DatabaseHelper {
               ''');
 
     await db.execute('''
-              CREATE TABLE goals (
+              CREATE TABLE wishes (
                 _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                goalName TEXT NOT NULL,
+                wishName TEXT NOT NULL,
                 targetValue INTEGER NOT NULL,
                 user TEXT NOT NULL,
                 timestamp INTEGER NOT NULL
@@ -80,14 +80,6 @@ class DatabaseHelper {
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
 
-    print('hi');
-    await db.execute('''
-              CREATE TABLE users (
-                _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                name TEXT NOT NULL,
-                timestamp INTEGER NOT NULL
-              )
-              ''');
   }
 
     // Helper methods

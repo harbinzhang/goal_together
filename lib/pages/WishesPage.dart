@@ -1,39 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
-import 'package:goaltogether/models/Habit.dart';
-import 'package:goaltogether/providers/HabitTableHandler.dart';
+import 'package:goaltogether/models/Wish.dart';
+import 'package:goaltogether/providers/WishTableHandler.dart';
 import 'package:goaltogether/res/colors.dart';
 
 import 'package:goaltogether/components/HabitCard.dart';
 
-class HabitsPage extends StatefulWidget {
-  HabitsPage({Key key, this.user}) : super(key: key);
+class WishesPage extends StatefulWidget {
+  WishesPage({Key key, this.user}) : super(key: key);
 
   final String user;
 
   @override
-  _HabitsPageState createState() => _HabitsPageState(user: this.user);
+  _WishesPageState createState() => _WishesPageState(user: this.user);
 }
 
 
-class _HabitsPageState extends State<HabitsPage> {
-  _HabitsPageState({this.user});
+class _WishesPageState extends State<WishesPage> {
+  _WishesPageState({this.user});
 
   final user;
-  final habitsHandler = HabitTableHandler();
-  List<Habit> _habits = [];
-  final _habitController = TextEditingController();
+  final wishesHandler = WishTableHandler();
+  List<Wish> _wishes = [];
+  final _wishController = TextEditingController();
+  final _wishValueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-        appBar: AppBar(title: Text("$user's Habit"),),
-        body: _buildHabitsList(),
+        appBar: AppBar(title: Text("$user's wish pool"),),
+        body: _buildWishesList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _showAddHabit();
+            _showAddWish();
           },
           child: Icon(Icons.add),
           backgroundColor: Colors.green,
@@ -41,22 +42,22 @@ class _HabitsPageState extends State<HabitsPage> {
     );
   }
 
-  Widget _buildHabitsList() {
+  Widget _buildWishesList() {
 
-    print(_habits);
+    print(_wishes);
     return ListView.separated(
       padding: const EdgeInsets.all(8),
-      itemCount: _habits.length,
+      itemCount: _wishes.length,
       itemBuilder: (BuildContext context, int index) {
-        final item = _habits[index];
-        var habitName = item.habitName;
+        final item = _wishes[index];
+        var habitName = item.wishName;
         return Dismissible(
           background: Container(color: kShrinePink50),
           key: UniqueKey(),
           onDismissed: (direction) {
             setState(() {
               _delete(item.id);
-              _habits.removeAt(index);
+              _wishes.removeAt(index);
             });
 
             Scaffold.of(context)
@@ -74,48 +75,61 @@ class _HabitsPageState extends State<HabitsPage> {
     );
   }
 
-  void _refreshHabitsList() async {
-//    var habits = await habitsHandler.queryAllRows();
-    var habits = await habitsHandler.queryAllHabitsByUser(this.user);
+  void _refreshWishesList() async {
+    var habits = await wishesHandler.queryAllWishesByUser(this.user);
     print(habits);
-    if (!DeepCollectionEquality().equals(habits, _habits)) {
+    if (!DeepCollectionEquality().equals(habits, _wishes)) {
       setState(() {
-        _habits = habits;
+        _wishes = habits;
       });
     }
   }
 
-  void _insert(String habitName) async {
+  void _insert(String habitName, String value) async {
     // row to insert
-    final habit = Habit(
-      habitName: habitName,
-      value: 1,
+    final wish = Wish(
+      wishName: habitName,
+      targetValue: int.parse(value),
       user: this.user,
     );
-    final id = await habitsHandler.insert(habit);
-    print('inserted row id: $id');
+    final id = await wishesHandler.insert(wish);
   }
 
   void _delete(int id) async {
     // Assuming that the number of rows is the id for the last row.
-    final rowsDeleted = await habitsHandler.delete(id);
+    final rowsDeleted = await wishesHandler.delete(id);
     print('deleted $rowsDeleted row(s): row $id');
   }
 
 
-  void _showAddHabit() {
+  void _showAddWish() {
     // flutter defined function
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("New Habit"),
-          content: new TextField(
-            controller: _habitController,
-            decoration: InputDecoration(
+          title: new Text("New Wish"),
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                new TextField(
+                  controller: _wishController,
+                  decoration: InputDecoration(
 //                filled: true,
-              labelText: 'habit name',
+                    labelText: 'wish name',
+                  ),
+                ),
+                new TextField(
+                  controller: _wishValueController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+//                filled: true,
+                    labelText: 'wish value',
+                  ),
+                ),
+              ]
             ),
           ),
           actions: <Widget>[
@@ -123,16 +137,18 @@ class _HabitsPageState extends State<HabitsPage> {
             new FlatButton(
               child: new Text("Cancel"),
               onPressed: () {
-                _habitController.clear();
+                _wishController.clear();
+                _wishValueController.clear();
                 Navigator.of(context).pop();
               },
             ),
             new FlatButton(
               child: new Text("Add"),
               onPressed: () {
-                _insert(_habitController.text);
-                _refreshHabitsList();
-                _habitController.clear();
+                _insert(_wishController.text, _wishValueController.text);
+                _refreshWishesList();
+                _wishController.clear();
+                _wishValueController.clear();
                 Navigator.of(context).pop();
               },
             ),
